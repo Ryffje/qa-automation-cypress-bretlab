@@ -45,7 +45,7 @@ describe('BretLab - Registro', () => {
       cy.get('input[name="email"], #email').clear().type(user.email);
       cy.get('input[name="password"], #password').clear().type(user.password);
       cy.get('input[name="phone"], #phone').clear().type(user.phone);
-      cy.get('input[name="documentId"], #documentId').clear().type(user.documentId);
+      cy.get('input[name="identity_document"]').clear().type(user.documentId);
       cy.get('input[name="location"], #location').clear().type(user.location);
     });
   });
