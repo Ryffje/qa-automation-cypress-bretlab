@@ -1,14 +1,12 @@
+import RegisterPage from '../pages/RegisterPage';
+
 describe('BretLab - Registro', () => {
   beforeEach(() => {
-    cy.visit('https://www.bretlab.net/');
-
-    cy.contains('button, a', /registr/i, { timeout: 10000 })
-      .should('be.visible')
-      .click({ force: true });
+    cy.openRegisterModal();
   });
 
   it('debe escribir en el campo nombre', () => {
-    cy.get('#firstName')
+    RegisterPage.firstName()
       .should('be.visible')
       .clear()
       .type('Jeffry')
@@ -16,7 +14,7 @@ describe('BretLab - Registro', () => {
   });
 
   it('debe escribir en el campo apellido', () => {
-    cy.get('#lastName')
+    RegisterPage.lastName()
       .should('be.visible')
       .clear()
       .type('Leon')
@@ -24,12 +22,12 @@ describe('BretLab - Registro', () => {
   });
 
   it('debe validar que el email exista', () => {
-    cy.get('input[name="email"], #email')
+    RegisterPage.email()
       .should('be.visible');
   });
 
   it('debe mostrar validaciones al intentar enviar vacío', () => {
-    cy.get('button[type="submit"]')
+    RegisterPage.submit()
       .scrollIntoView()
       .click({ force: true });
 
@@ -40,13 +38,15 @@ describe('BretLab - Registro', () => {
     cy.fixture('user').then((data) => {
       const user = data.validUser;
 
-      cy.get('#firstName').clear().type(user.firstName);
-      cy.get('#lastName').clear().type(user.lastName);
-      cy.get('input[name="email"], #email').clear().type(user.email);
-      cy.get('input[name="password"], #password').clear().type(user.password);
-      cy.get('input[name="phone"], #phone').clear().type(user.phone);
-      cy.get('input[name="identity_document"]').clear().type(user.documentId);
-      cy.get('input[name="location"], #location').clear().type(user.location);
+      RegisterPage.fillForm(user);
+
+      RegisterPage.firstName().should('have.value', user.firstName);
+      RegisterPage.lastName().should('have.value', user.lastName);
+      RegisterPage.email().should('have.value', user.email);
+      RegisterPage.password().should('have.value', user.password);
+      RegisterPage.phone().should('have.value', user.phone);
+      RegisterPage.document().should('have.value', user.documentId);
+      RegisterPage.location().should('have.value', user.location);
     });
   });
 });
